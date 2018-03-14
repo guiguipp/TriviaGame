@@ -1,8 +1,12 @@
+const verbArray= [];
+const nounArray= [];
+
 function Verb(fr, eng1, eng2, eng3) {
     this.frenchTrans = fr;
     this.englishTrans = eng1;
     this.badEnglishTrans1 = eng2;
     this.badEnglishTrans2 = eng3;
+    verbArray.push(this);
 }
 
 const verbAbai1 = new Verb("abaisser", "to lower", "to free", "to buy");
@@ -686,12 +690,20 @@ const verbZébr678 = new Verb("zébrer", "to stripe", "to vote", "to gather");
 const verbZéza679 = new Verb("zézayer", "to lisp", "to cost", "to maintain");
 const verbZone680 = new Verb("zoner", "to zone", "to want", "to invent");
 
+function addVerb(){    
+    var v = new Verb(); // here we create instance
+    verbArray.push(v);
+}
+
+
+
 function Noun(fr, gen, eng1, eng2, eng3) {
     this.frenchTrans = fr;
     this.gender = gen;
     this.englishTrans = eng1;
     this.badEnglishTrans1 = eng2;
     this.badEnglishTrans2 = eng3;
+    nounArray.push(this);
 }
 
 const nounAbei1 = new Noun("abeille", "F", "bee", "balloon, football", "acrobat");
