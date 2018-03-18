@@ -10,7 +10,7 @@ $("#question_panel").hide();
 let gameDone = false;
 let wins = 0;
 let losses = 0;
-let games = 0;
+let rounds = 0;
 let total = 0;
     
 function resetGame(){
@@ -23,16 +23,15 @@ function resetGame(){
     $("#question_panel").hide();
 }
 
+
 function newGame(){
-    counter = 10;
+    // counter = 10;
     randomVerb = verbArray[Math.floor(Math.random()*verbArray.length)];
-    // let randomNoun = nounArray[Math.floor(Math.random()*nounArray.length)];
-    // let randomNounAnswers = [];
     randomVerbTrans.push(randomVerb.englishTrans,randomVerb.badEnglishTrans1,randomVerb.badEnglishTrans2,randomVerb.badEnglishTrans3,randomVerb.badEnglishTrans4); 
-    // randomNounAnswers.push(randomNoun.englishTrans,randomNoun.badEnglishTrans1,randomNoun.badEnglishTrans2); 
     console.log(randomVerb)
     randomAndCut();
     console.log(randomizedTrans);
+    $(".response").hide()
     $("#question_panel").show();
     $("#question").val(randomVerb.frenchTrans).text(randomVerb.frenchTrans)
     $("#1").val(randomizedTrans[0]).text(randomizedTrans[0])
@@ -42,38 +41,46 @@ function newGame(){
     $("#5").val(randomizedTrans[4]).text(randomizedTrans[4])
     
     if (gameDone === false) {
-        // visibleTimer();
+        visibleTimer();
+
         $(".option").on("click", function() {
             gameDone = true;
             var value = $(this).attr("value");
             if (value === randomVerb.englishTrans){
                 gameWon(randomVerb.frenchTrans,randomVerb.englishTrans);
-                resetGame();
+                resetGame()
+                wins++;
+                console.log(wins)
+                rounds++;
+                console.log(rounds)
             }
             else {
                 gameLost(randomVerb.frenchTrans,randomVerb.englishTrans);
                 resetGame();
+                losses++;
+                rounds++;
             }
         });
     }
 
 }    
-// function visibleTimer(){
-//     gameDone=false; 
-//     setInterval(function() {
-//         counter--;
-//         if (gameDone === false) {
-//             if (counter >= 0) {
-//             $("#count").text(counter);
-//             }
-//             if (counter === 0) {
-//                 gameDone=true;            
-//                 gameLost();
-//             }
-//           } 
-//         }, 1000);  
-//     // clearInterval(intervalId);
-//     };
+function visibleTimer(){
+    counter = 10;
+    var timer = setInterval(function() {
+        counter--;
+        $("#count").text(counter);
+            if (counter > 0) {
+                console.log("wait for a click") 
+            }
+            else if (counter === 0) {
+                gameDone=true;
+                console.log("else if") 
+                clearInterval(timer);
+                gameLost();
+                resetGame()
+            }
+        }, 1000);  
+    };
 
 function invisibleTimer(){
     var otherCounter = 6;
@@ -110,18 +117,18 @@ function gameWon(french,english){
     $("#question_panel").hide();
     console.log("You have won");
     console.log(french, english)
-    wins++;
-    games++;
-    $(".response").text("You are correct. The French verb: \"" + french + "\" means \"" + english +"\"")
+    // wins++;
+    // games++;
+    $(".response").show().text("You are correct. The French verb: \"" + french + "\" means \"" + english +"\"")
     // happy
     invisibleTimer(); 
 }
 function gameLost(french,english){
     $("#question_panel").hide();
     console.log("You have lost");
-    losses++;
-    games++;
-    $(".response").text("Actually, the French verb: \"" + french + "\" means \"" + english +"\"")
+    // losses++;
+    // games++;
+    $(".response").show().text("Actually, the French verb: \"" + french + "\" means \"" + english +"\"")
     // sad
     invisibleTimer();
 }
@@ -130,7 +137,6 @@ $("#start").on("click", function() {
     $("#start").hide();
     newGame()
 });
-
 
 
 });
