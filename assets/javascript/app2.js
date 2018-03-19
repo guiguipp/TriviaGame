@@ -20,17 +20,12 @@ $("#play_again").hide();
 
 // on start
 function startGame (){
-$("#start").on("click", function() {
+$("#start").unbind().on("click", function() {
     $("#start").hide();
     resetGame();
     defineQuestion();
     gameLogic();
-    totalWins = roundWins + totalWins;
-    totalLosses = roundLosses + totalLosses;
-    totalRounds = roundsNum + totalRounds;
-    if (totalRounds !== 0) {
-        $("#play_again").show().text(`You have played= ${totalRounds} games, and won ${totalWins} of them`)
-        }
+    return;
     });
 }
 
@@ -59,6 +54,7 @@ function defineQuestion(){
     $("#4").val(randomizedTrans[3]).text(randomizedTrans[3])
     $("#5").val(randomizedTrans[4]).text(randomizedTrans[4])
     gameTimer(11)
+    return;
 }
 
 // Quizz functions
@@ -91,8 +87,6 @@ function invisibleTimer(){
         else if (otherCounter === 0 && roundsNum >= 10) {
             console.log("wanna play again?")
             clearInterval(otherTimer)
-            roundsNum = 0;
-            resetGame();
             playAgain();
         }
         else {
@@ -117,35 +111,39 @@ function gameTimer(time){
 // right answer function
 function rightAnswer(french,english){
     roundWins++;
+    totalWins++;
     roundsNum++;
     totalRounds++;
     gameStats();
     invisibleTimer();
-    $(".response").show().text("Congrats. The French verb: \"" + french + "\" means \"" + english +"\"");
+    $(".response").show().text("You are correct. The French verb: \"" + french + "\" indeed means \"" + english +"\"");
     resetGame();
 }
 
 // wrong answer function
 function wrongAnswer(french,english){
     roundLosses++;
+    totalLosses++;
     roundsNum++;
     totalRounds++;
     gameStats();
     invisibleTimer();
-    $(".response").show().text("Nope. The French verb: \"" + french + "\" means \"" + english +"\"")
+    $(".response").show().text("The answer was the French verb: \"" + french + "\" means \"" + english +"\"")
     resetGame();
 }
 
 // game logic
 function gameLogic(){
     $(".option").unbind().on("click", function() {
-        clearInterval(mainTimer);
+        // clearInterval(mainTimer);
         buttonValue = $(this).attr("value");
         if (buttonValue === randomVerb.englishTrans){
             rightAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
+            clearInterval(mainTimer);
             }
         else {
             wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
+            clearInterval(mainTimer);
             }
         });
     }
@@ -163,15 +161,14 @@ function gameStats(){
 
 function playAgain() {
     $(".response").hide()
-    totalWins = roundWins + totalWins;
-    roundWins = 0;
-    totalLosses = roundLosses + totalLosses;
-    roundLosses = 0;
     score = (totalWins / totalRounds * 100).toFixed(0);
-    $("#play_again").show().text(`You answered ${totalWins} questions correctly. Your score is now ${score}%`)
+    $("#play_again").show().text(`In the past round, you answered ${roundWins} questions correctly. Your score is now ${score}%`)
+    roundsNum = 0;
+    roundWins = 0;
+    roundLosses = 0;
     $("#start").show();
     $("#start").on("click", function() {
-        $("#play_again").hide().empty()
+        $("#play_again").hide();
         startGame();
         });
 }    
