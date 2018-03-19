@@ -27,6 +27,7 @@ header {
     background-color: #5969FF;
     margin-top: 25px;
     border-radius: 20px;
+    margin-left: -15px;
 }
 .option:hover{
     background-color:#A7A1FF;
