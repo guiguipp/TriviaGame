@@ -3,14 +3,16 @@ $(document).ready(function() {
 let randomVerb; 
 let randomVerbTrans;
 let randomizedTrans;
+let roundOver = false;
 let roundsNum = 0;
-let roundOver;
 let roundWins = 0;
 let roundLosses = 0;
 let totalWins = 0;
 let totalLosses = 0;
 let totalRounds = 0;
 let buttonValue;
+let mainCounter;
+let mainTimer;
 
 $("#question_panel").hide();
 
@@ -20,6 +22,7 @@ $("#start").on("click", function() {
     $("#start").hide();
     resetGame();
     defineQuestion();
+    gameLogic();
 });
 }
 
@@ -27,7 +30,6 @@ $("#start").on("click", function() {
 function resetGame() {
     randomVerbTrans=[];
     randomizedTrans=[];
-    roundOver = false;
     $("#question_panel").hide();
     $("#buttons").empty();
 }
@@ -47,6 +49,7 @@ function defineQuestion(){
     $("#3").val(randomizedTrans[2]).text(randomizedTrans[2])
     $("#4").val(randomizedTrans[3]).text(randomizedTrans[3])
     $("#5").val(randomizedTrans[4]).text(randomizedTrans[4])
+    gameTimer(11)
 }
 
 // Quizz functions
@@ -81,7 +84,21 @@ function invisibleTimer(){
             clearInterval(otherTimer)
         }
         else {
+            roundOver = true;
             console.log("Wait " + otherCounter + " more sec before resetting the game")
+        }
+    }, 1000)
+}
+function gameTimer(time){
+    mainTimer = setInterval(function() {
+        if (time === 0) {
+            clearInterval(mainTimer);
+            wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
+            return;
+        }
+        else {
+            time--;
+            $("#count").text(time);
         }
     }, 1000)
 }
@@ -106,38 +123,22 @@ function wrongAnswer(french,english){
 // game logic
 // want it to run 10 times before coming back to starting point
 function gameLogic(){
-    var mainCounter = 10;
-    var mainTimer = setInterval(function() {
-        mainCounter--;
-        console.log("Main timer is " + mainCounter)    
-        if (mainCounter === 0) {
-            // wrong answer
-            clearInterval(mainTimer);
-            wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
-        }
-        else {
-            $(".option").on("click", function() {
-            buttonValue = $(this).attr("value");
-            if (buttonValue === randomVerb.englishTrans){
-                roundWins++;
-                roundsNum++;
-                console.log(`roundsNum: `,roundsNum,`\nwins: `,roundWins);
-                rightAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
-                resetGame();
-                clearInterval(mainTimer);
+    $(".option").unbind().on("click", function() {
+        clearInterval(mainTimer);
+        buttonValue = $(this).attr("value");
+        if (buttonValue === randomVerb.englishTrans){
+            roundWins++;
+            roundsNum++;
+            rightAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
             }
-            else {
-                roundLosses++;
-                roundsNum++;
-                console.log(`roundsNum: `,roundsNum,`\nlosses: `,roundLosses);
-                wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
-                resetGame();
-                clearInterval(mainTimer);
-                }
-            });
-        }
-    }, 1000)    
-}
+        else {
+            roundLosses++;
+            roundsNum++;
+            wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
+            }
+        });
+    }
+
 
 startGame();
 
