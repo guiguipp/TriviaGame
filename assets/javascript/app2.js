@@ -39,7 +39,7 @@ function resetGame() {
     randomizedTrans=[];
     $("#question_panel").hide();
     $("#buttons").empty();
-    time = 10;
+    $("#count").empty();
 }
 
 // game functions
