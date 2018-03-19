@@ -20,7 +20,6 @@ $("#start").on("click", function() {
     $("#start").hide();
     resetGame();
     defineQuestion();
-    gameLogic()
 });
 }
 
@@ -66,12 +65,9 @@ function cut (array) {
             randomizedTrans.push(option);
         }
     };
-};
+};        
 
-// timer function
-
-
-// invisible time until gets to new game
+// invisible timer until gets to new game
 function invisibleTimer(){
     var otherCounter = 5;
     var otherTimer = setInterval(function() {
@@ -96,21 +92,31 @@ function rightAnswer(french,english){
     console.log("This was the right answer");
     console.log(french, english)
     $(".response").show().text("Congrats. The French verb: \"" + french + "\" means \"" + english +"\"")
+    resetGame();
 }
 
 // wrong answer function
 function wrongAnswer(french,english){
     invisibleTimer()
     console.log("This was NOT the right answer");
-    console.log(french, english)
     $(".response").show().text("Nope. The French verb: \"" + french + "\" means \"" + english +"\"")
+    resetGame();
 }
 
 // game logic
 // want it to run 10 times before coming back to starting point
 function gameLogic(){
-    if (roundsNum < 10) {
-        $(".option").on("click", function() {
+    var mainCounter = 10;
+    var mainTimer = setInterval(function() {
+        mainCounter--;
+        console.log("Main timer is " + mainCounter)    
+        if (mainCounter === 0) {
+            // wrong answer
+            clearInterval(mainTimer);
+            wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
+        }
+        else {
+            $(".option").on("click", function() {
             buttonValue = $(this).attr("value");
             if (buttonValue === randomVerb.englishTrans){
                 roundWins++;
@@ -118,6 +124,7 @@ function gameLogic(){
                 console.log(`roundsNum: `,roundsNum,`\nwins: `,roundWins);
                 rightAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
                 resetGame();
+                clearInterval(mainTimer);
             }
             else {
                 roundLosses++;
@@ -125,12 +132,11 @@ function gameLogic(){
                 console.log(`roundsNum: `,roundsNum,`\nlosses: `,roundLosses);
                 wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
                 resetGame();
+                clearInterval(mainTimer);
                 }
             });
         }
-    else {
-        console.log("Time to start a new game")
-    }
+    }, 1000)    
 }
 
 startGame();
