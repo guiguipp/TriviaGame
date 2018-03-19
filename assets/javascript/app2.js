@@ -15,6 +15,7 @@ let mainCounter;
 let mainTimer;
 
 $("#question_panel").hide();
+$("#play_again").hide();
 
 // on start
 function startGame (){
@@ -23,7 +24,13 @@ $("#start").on("click", function() {
     resetGame();
     defineQuestion();
     gameLogic();
-});
+    totalWins = roundWins + totalWins;
+    totalLosses = roundLosses + totalLosses;
+    totalRounds = roundsNum + totalRounds;
+    if (totalRounds !== 0) {
+        $("#play_again").show().text(`You have played= ${totalRounds} games, and won ${totalWins} of them`)
+        }
+    });
 }
 
 // reset function
@@ -32,6 +39,7 @@ function resetGame() {
     randomizedTrans=[];
     $("#question_panel").hide();
     $("#buttons").empty();
+    time = 10;
 }
 
 // game functions
@@ -82,6 +90,9 @@ function invisibleTimer(){
         else if (otherCounter === 0 && roundsNum >= 10) {
             console.log("wanna play again?")
             clearInterval(otherTimer)
+            gameStats();
+            // $("#start").show();
+            // startGame();
         }
         else {
             roundOver = true;
@@ -94,7 +105,6 @@ function gameTimer(time){
         if (time === 0) {
             clearInterval(mainTimer);
             wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
-            return;
         }
         else {
             time--;
@@ -105,40 +115,48 @@ function gameTimer(time){
 
 // right answer function
 function rightAnswer(french,english){
-    invisibleTimer()
-    console.log("This was the right answer");
-    console.log(french, english)
-    $(".response").show().text("Congrats. The French verb: \"" + french + "\" means \"" + english +"\"")
+    roundWins++;
+    roundsNum++;
+    gameStats();
+    invisibleTimer();
+    $(".response").show().text("Congrats. The French verb: \"" + french + "\" means \"" + english +"\"");
     resetGame();
 }
 
 // wrong answer function
 function wrongAnswer(french,english){
-    invisibleTimer()
-    console.log("This was NOT the right answer");
+    roundLosses++;
+    roundsNum++;
+    gameStats();
+    invisibleTimer();
     $(".response").show().text("Nope. The French verb: \"" + french + "\" means \"" + english +"\"")
     resetGame();
 }
 
 // game logic
-// want it to run 10 times before coming back to starting point
 function gameLogic(){
     $(".option").unbind().on("click", function() {
         clearInterval(mainTimer);
         buttonValue = $(this).attr("value");
         if (buttonValue === randomVerb.englishTrans){
-            roundWins++;
-            roundsNum++;
             rightAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
             }
         else {
-            roundLosses++;
-            roundsNum++;
             wrongAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
             }
         });
     }
 
+function gameStats(){
+    console.log("**********************")
+    console.log("roundWins: " + roundWins)
+    console.log("roundLosses: " + roundLosses)
+    console.log("roundsNum: " + roundsNum)
+    console.log("totalWins: " + totalWins)
+    console.log("totalLosses: " + totalLosses)
+    console.log("totalRounds: " + totalRounds)    
+    console.log("**********************")
+}
 
 startGame();
 
