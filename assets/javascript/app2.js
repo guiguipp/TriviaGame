@@ -24,13 +24,13 @@ $("#play_again").hide();
 
 // on start
 function startGame (){
-$("#start").unbind().on("click", function() {
-    $("#start").hide();
-    resetGame();
-    defineQuestion();
-    gameLogic();
-    return;
-    });
+    $("#start").unbind().on("click", function() {
+        $("#start").hide();
+        resetGame();
+        defineQuestion();
+        gameLogic();
+        return;
+        });
 }
 
 // reset function
@@ -98,10 +98,11 @@ function invisibleTimer(){
         }
         else {
             roundOver = true;
-            console.log("Wait " + otherCounter + " more sec before resetting the game")
+            console.log(otherCounter + " more sec before resetting the game")
         }
     }, 1000)
 }
+// Visible timer to answer question
 function gameTimer(time){
     mainTimer = setInterval(function() {
         if (time === 0) {
@@ -124,7 +125,7 @@ function rightAnswer(french,english){
     gameStats();
     invisibleTimer();
     $(".response").text("Correct!").show();
-    $(".hashtag").text("#FTW!").show();
+    $(".hashtag").text("#FTW").show();
     $(".comment").text("The French verb: \"" + french + "\" indeed means \"" + english +"\"").show();
     resetGame();
     cueWord = "win";
@@ -152,7 +153,7 @@ function wrongAnswer(french,english){
     gameStats();
     invisibleTimer();
     $(".response").text("Unsure about that one?").show();
-    $(".hashtag").text("#Oops!").show();
+    $(".hashtag").text("#Oops").show();
     $(".comment").text("The French verb: \"" + french + "\" means \"" + english +"\"").show();
     resetGame();
     cueWord = "sad";
@@ -173,7 +174,6 @@ function wrongAnswer(french,english){
 // game logic
 function gameLogic(){
     $(".option").unbind().on("click", function() {
-        // clearInterval(mainTimer);
         buttonValue = $(this).attr("value");
         if (buttonValue === randomVerb.englishTrans){
             rightAnswer(randomVerb.frenchTrans,randomVerb.englishTrans);
