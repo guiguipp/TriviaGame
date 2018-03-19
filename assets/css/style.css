@@ -22,3 +22,12 @@ header {
     font-size: 35px;
     margin: 15px 15px;
 }
+.option {
+    width: 200px;
+    background-color: #5969FF;
+    margin-top: 25px;
+    border-radius: 20px;
+}
+.option:hover{
+    background-color:#A7A1FF;
+}

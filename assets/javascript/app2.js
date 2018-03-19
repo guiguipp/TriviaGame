@@ -14,6 +14,10 @@ let buttonValue;
 let mainCounter;
 let mainTimer;
 let score;
+var apiUrl = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=";
+var cueWord;
+var queryUrl;
+var embedCode;
 
 $("#question_panel").hide();
 $("#play_again").hide();
@@ -40,6 +44,7 @@ function resetGame() {
 
 // game functions
 function defineQuestion(){
+    $(".gif").empty();
     randomVerb = verbArray[Math.floor(Math.random()*verbArray.length)];
     randomVerbTrans.push(randomVerb.englishTrans,randomVerb.badEnglishTrans1,randomVerb.badEnglishTrans2,randomVerb.badEnglishTrans3,randomVerb.badEnglishTrans4); 
     console.log(randomVerb)
@@ -47,7 +52,7 @@ function defineQuestion(){
     console.log(randomizedTrans);
     $(".response").hide()
     $("#question_panel").show();
-    $("#question").val(randomVerb.frenchTrans).text(randomVerb.frenchTrans)
+    $("#question").val(randomVerb.frenchTrans).text("What is the right translation for the following French verb: \n" + randomVerb.frenchTrans)
     $("#1").val(randomizedTrans[0]).text(randomizedTrans[0])
     $("#2").val(randomizedTrans[1]).text(randomizedTrans[1])
     $("#3").val(randomizedTrans[2]).text(randomizedTrans[2])
@@ -118,6 +123,20 @@ function rightAnswer(french,english){
     invisibleTimer();
     $(".response").show().text("Correct! The French verb: \"" + french + "\" indeed means \"" + english +"\"");
     resetGame();
+    cueWord = "win";
+    queryUrl= apiUrl+cueWord;
+    console.log(queryUrl);
+
+    $.ajax({
+      url: queryUrl,
+      method: "GET"
+    }).then(function(response) {
+        console.log(response)
+        console.log(JSON.stringify(response.data.embed_url));
+        embedCode = "<embed src="+JSON.stringify(response.data.embed_url)+">"
+        $(".gif").html(embedCode)
+    });
+
 }
 
 // wrong answer function
@@ -130,6 +149,19 @@ function wrongAnswer(french,english){
     invisibleTimer();
     $(".response").show().text("Unsure about that one? The French verb: \"" + french + "\" means \"" + english +"\"")
     resetGame();
+    cueWord = "sad";
+    queryUrl= apiUrl+cueWord;
+    console.log(queryUrl);
+
+    $.ajax({
+      url: queryUrl,
+      method: "GET"
+    }).then(function(response) {
+        console.log(response)
+        console.log(JSON.stringify(response.data.embed_url));
+        embedCode = "<embed src="+JSON.stringify(response.data.embed_url)+">"
+        $(".gif").html(embedCode)
+    });
 }
 
 // game logic
