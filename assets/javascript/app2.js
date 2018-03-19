@@ -51,6 +51,8 @@ function defineQuestion(){
     randomAndCut();
     console.log(randomizedTrans);
     $(".response").hide()
+    $(".hashtag").hide();
+    $(".comment").hide();
     $("#question_panel").show();
     $("#question").val(randomVerb.frenchTrans).text("What is the right translation \nfor the following French verb: \n" + randomVerb.frenchTrans);
     $("#1").val(randomizedTrans[0]).text(randomizedTrans[0])
@@ -121,7 +123,9 @@ function rightAnswer(french,english){
     totalRounds++;
     gameStats();
     invisibleTimer();
-    $(".response").show().text("Correct! \nThe French verb: \"" + french + "\" indeed means \"" + english +"\"");
+    $(".response").text("Correct!").show();
+    $(".hashtag").text("#FTW!").show();
+    $(".comment").text("The French verb: \"" + french + "\" indeed means \"" + english +"\"").show();
     resetGame();
     cueWord = "win";
     queryUrl= apiUrl+cueWord;
@@ -147,7 +151,9 @@ function wrongAnswer(french,english){
     totalRounds++;
     gameStats();
     invisibleTimer();
-    $(".response").show().text("Unsure about that one? \nThe French verb: \"" + french + "\" means \"" + english +"\"");
+    $(".response").text("Unsure about that one?").show();
+    $(".hashtag").text("#Oops!").show();
+    $(".comment").text("The French verb: \"" + french + "\" means \"" + english +"\"").show();
     resetGame();
     cueWord = "sad";
     queryUrl= apiUrl+cueWord;
@@ -193,6 +199,8 @@ function gameStats(){
 
 function playAgain() {
     $(".response").hide()
+    $(".hashtag").hide();
+    $(".comment").hide();
     $("#gif").hide();
     score = (totalWins / totalRounds * 100).toFixed(0);
     $("#play_again").show().text(`In the past round, you answered ${roundWins} questions correctly. Your overall score is now ${score}%`)
