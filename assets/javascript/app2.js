@@ -13,6 +13,7 @@ let totalRounds = 0;
 let buttonValue;
 let mainCounter;
 let mainTimer;
+let score;
 
 $("#question_panel").hide();
 $("#play_again").hide();
@@ -80,7 +81,7 @@ function cut (array) {
 
 // invisible timer until gets to new game
 function invisibleTimer(){
-    var otherCounter = 5;
+    var otherCounter = 1;
     var otherTimer = setInterval(function() {
     otherCounter--;
         if (otherCounter === 0 && roundsNum < 10) {
@@ -90,9 +91,9 @@ function invisibleTimer(){
         else if (otherCounter === 0 && roundsNum >= 10) {
             console.log("wanna play again?")
             clearInterval(otherTimer)
-            gameStats();
-            // $("#start").show();
-            // startGame();
+            roundsNum = 0;
+            resetGame();
+            playAgain();
         }
         else {
             roundOver = true;
@@ -117,6 +118,7 @@ function gameTimer(time){
 function rightAnswer(french,english){
     roundWins++;
     roundsNum++;
+    totalRounds++;
     gameStats();
     invisibleTimer();
     $(".response").show().text("Congrats. The French verb: \"" + french + "\" means \"" + english +"\"");
@@ -127,6 +129,7 @@ function rightAnswer(french,english){
 function wrongAnswer(french,english){
     roundLosses++;
     roundsNum++;
+    totalRounds++;
     gameStats();
     invisibleTimer();
     $(".response").show().text("Nope. The French verb: \"" + french + "\" means \"" + english +"\"")
@@ -157,6 +160,21 @@ function gameStats(){
     console.log("totalRounds: " + totalRounds)    
     console.log("**********************")
 }
+
+function playAgain() {
+    $(".response").hide()
+    totalWins = roundWins + totalWins;
+    roundWins = 0;
+    totalLosses = roundLosses + totalLosses;
+    roundLosses = 0;
+    score = (totalWins / totalRounds * 100).toFixed(0);
+    $("#play_again").show().text(`You answered ${totalWins} questions correctly. Your score is now ${score}%`)
+    $("#start").show();
+    $("#start").on("click", function() {
+        $("#play_again").hide().empty()
+        startGame();
+        });
+}    
 
 startGame();
 
