@@ -77,7 +77,7 @@ function cut (array) {
 
 // invisible timer until gets to new game
 function invisibleTimer(){
-    var otherCounter = 1;
+    var otherCounter = 5;
     var otherTimer = setInterval(function() {
     otherCounter--;
         if (otherCounter === 0 && roundsNum < 10) {
@@ -116,7 +116,7 @@ function rightAnswer(french,english){
     totalRounds++;
     gameStats();
     invisibleTimer();
-    $(".response").show().text("You are correct. The French verb: \"" + french + "\" indeed means \"" + english +"\"");
+    $(".response").show().text("Correct! The French verb: \"" + french + "\" indeed means \"" + english +"\"");
     resetGame();
 }
 
@@ -128,7 +128,7 @@ function wrongAnswer(french,english){
     totalRounds++;
     gameStats();
     invisibleTimer();
-    $(".response").show().text("The answer was the French verb: \"" + french + "\" means \"" + english +"\"")
+    $(".response").show().text("Unsure about that one? The French verb: \"" + french + "\" means \"" + english +"\"")
     resetGame();
 }
 
@@ -162,7 +162,7 @@ function gameStats(){
 function playAgain() {
     $(".response").hide()
     score = (totalWins / totalRounds * 100).toFixed(0);
-    $("#play_again").show().text(`In the past round, you answered ${roundWins} questions correctly. Your score is now ${score}%`)
+    $("#play_again").show().text(`In the past round, you answered ${roundWins} questions correctly. Your overall score is now ${score}%`)
     roundsNum = 0;
     roundWins = 0;
     roundLosses = 0;
