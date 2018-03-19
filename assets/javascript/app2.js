@@ -4,6 +4,7 @@ let randomVerb;
 let randomVerbTrans;
 let randomizedTrans;
 let roundOver = false;
+let gameNum = 0;
 let roundsNum = 0;
 let roundWins = 0;
 let roundLosses = 0;
@@ -128,7 +129,7 @@ function rightAnswer(french,english){
     $(".hashtag").text("#FTW").show();
     $(".comment").text("The French verb: \"" + french + "\" indeed means \"" + english +"\"").show();
     resetGame();
-    cueWord = "win";
+    cueWord = "success";
     queryUrl= apiUrl+cueWord;
     console.log(queryUrl);
 
@@ -153,10 +154,10 @@ function wrongAnswer(french,english){
     gameStats();
     invisibleTimer();
     $(".response").text("Unsure about that one?").show();
-    $(".hashtag").text("#Oops").show();
+    $(".hashtag").text("#oops").show();
     $(".comment").text("The French verb: \"" + french + "\" means \"" + english +"\"").show();
     resetGame();
-    cueWord = "sad";
+    cueWord = "fail";
     queryUrl= apiUrl+cueWord;
     console.log(queryUrl);
 
@@ -186,7 +187,8 @@ function gameLogic(){
         });
     }
 
-function gameStats(){
+
+    function gameStats(){
     console.log("**********************")
     console.log("roundWins: " + roundWins)
     console.log("roundLosses: " + roundLosses)
@@ -197,13 +199,15 @@ function gameStats(){
     console.log("**********************")
 }
 
+// game stats
 function playAgain() {
     $(".response").hide()
     $(".hashtag").hide();
     $(".comment").hide();
     $("#gif").hide();
+    gameNum = roundsNum/10;
     score = (totalWins / totalRounds * 100).toFixed(0);
-    $("#play_again").show().text(`In the past round, you answered ${roundWins} questions correctly. Your overall score is now ${score}%`)
+    $("#play_again").show().text(`In the past round, you answered ${roundWins}/10 questions correctly. After ${gameNum} round(s), your overall score is now ${score}%`)
     roundsNum = 0;
     roundWins = 0;
     roundLosses = 0;
