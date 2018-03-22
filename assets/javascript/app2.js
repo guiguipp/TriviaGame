@@ -15,7 +15,7 @@ let buttonValue;
 let mainCounter;
 let mainTimer;
 let score;
-var apiUrl = "http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=";
+var apiUrl = "https://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC&tag=";
 var cueWord;
 var queryUrl;
 var embedCode;
@@ -55,7 +55,7 @@ function defineQuestion(){
     $(".hashtag").hide();
     $(".comment").hide();
     $("#question_panel").show();
-    $("#question").val(randomVerb.frenchTrans).text("What is the right translation \nfor the following French verb: \n" + randomVerb.frenchTrans);
+    $("#question").val(randomVerb.frenchTrans).text("What is the right translation for the following French verb: " + randomVerb.frenchTrans);
     $("#1").val(randomizedTrans[0]).text(randomizedTrans[0])
     $("#2").val(randomizedTrans[1]).text(randomizedTrans[1])
     $("#3").val(randomizedTrans[2]).text(randomizedTrans[2])
