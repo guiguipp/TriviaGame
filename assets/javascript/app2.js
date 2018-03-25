@@ -205,9 +205,21 @@ function playAgain() {
     $(".hashtag").hide();
     $(".comment").hide();
     $("#gif").hide();
-    gameNum = roundsNum/10;
+    gameNum = totalRounds/10;
     score = (totalWins / totalRounds * 100).toFixed(0);
-    $("#play_again").show().text(`In the past round, you answered ${roundWins}/10 questions correctly. After ${gameNum} round(s), your overall score is now ${score}%`)
+    if (roundWins === 1 || roundWins === 0) {
+        roundQuestion = "question";
+    }
+    else {
+        roundQuestion = "questions";
+    }
+    if (gameNum === 1) {
+        roundWord = "round";
+    }
+    else {
+        roundWord = "rounds";
+    }
+    $("#play_again").show().text(`In the past round, you answered ${roundWins} ${roundQuestion} correctly out of 10. After ${gameNum} ${roundWord}, your overall score is now ${score}%`)
     roundsNum = 0;
     roundWins = 0;
     roundLosses = 0;
